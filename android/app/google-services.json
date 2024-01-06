@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1021648454045",
+    "project_id": "to-do-872ed",
+    "storage_bucket": "to-do-872ed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021648454045:android:0e39b226824b03292daf74",
+        "android_client_info": {
+          "package_name": "com.taskstodo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzsIBbJ6l_0I4q3OhF3GRpW8g8it5aWj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
