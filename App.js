@@ -1,10 +1,11 @@
-import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
 import { kColors } from "./src/utils/kColors";
-import Login from "./src/screens/login";
+import LoginScreen from "./src/screens/login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import Onboarding from "./src/components/onboarding";
+import Onboarding from "./src/screens/onboarding";
 
 const Loading = () => {
   return (
@@ -13,6 +14,8 @@ const Loading = () => {
     </View>
   );
 };
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,10 +39,23 @@ export default function App() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" backgroundColor={kColors.kPrimary} />
-      {isLoading ? <Loading /> : viewedOnboarding ? <Login /> : <Onboarding />}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {viewedOnboarding ? null : (
+          <Stack.Screen
+            name="Onboarding"
+            component={Onboarding}
+            options={{ headerShown: false }}
+          />
+        )}
+
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

@@ -1,7 +1,7 @@
 export default [
   {
     id: "1",
-    title: "Bem-vindo ao Tique Task!",
+    title: "Bem-vindo ao TiqueTask!",
     description: "O aplicativo de tarefas que ajuda você a organizar sua vida.",
     image: require("../../../assets/illust_checklist.png"),
   },

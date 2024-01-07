@@ -1,23 +1,61 @@
-import { View, Text, Button, TextInput, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import React, { useState } from "react";
 import { styles } from "./styles.js";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Feather } from "@expo/vector-icons";
+import { kColors } from "../../utils/kColors.js";
 
 const LoginScreen = () => {
-  const clearOnboarding = async () => {
-    try {
-      await AsyncStorage.removeItem("@viewedOnboarding");
-      console.log("Data successfully removed");
-    } catch (e) {
-      console.log("Error @removeItem: ", e);
-    }
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isPassVisible, setIsPassVisible] = useState(false);
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={clearOnboarding}>
-        <Text>Clear Onboarding</Text>
-      </TouchableOpacity>
+      <Image
+        source={require("../../../assets/logo.png")}
+        style={styles.image}
+      />
+      <TextInput
+        style={styles.emailInput}
+        placeholder="Email"
+        keyboardType="email-address"
+        value={email}
+        onChange={(value) => setEmail(value)}
+      />
+      <View style={styles.passContainer}>
+        <TextInput
+          style={styles.passInput}
+          placeholder="Senha"
+          secureTextEntry={!isPassVisible}
+          value={password}
+          onChange={(value) => setPassword(value)}
+        />
+        <TouchableOpacity onPress={() => setIsPassVisible(!isPassVisible)}>
+          <Feather
+            name={isPassVisible ? "eye-off" : "eye"}
+            color={kColors.kText}
+            size={20}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      </View>
+      <Pressable title="Entrar" onPress={() => {}} style={styles.loginButton}>
+        <Text style={styles.loginText}>Entrar</Text>
+      </Pressable>
+      <Pressable
+        title="Cadastrar"
+        onPress={() => {}}
+        style={styles.registerButton}
+      >
+        <Text style={styles.registerText}>Cadastrar</Text>
+      </Pressable>
     </View>
   );
 };
