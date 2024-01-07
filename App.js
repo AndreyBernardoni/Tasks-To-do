@@ -1,25 +1,27 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
-import { kColors } from "./src/utils/kColors";
+import auth from "@react-native-firebase/auth";
 import LoginScreen from "./src/screens/login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Onboarding from "./src/screens/onboarding";
-
-const Loading = () => {
-  return (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" color={kColors.kPrimary} />
-    </View>
-  );
-};
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
   const [viewedOnboarding, setViewedOnboarding] = useState(false);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   const checkOnboarding = async () => {
     try {
@@ -29,8 +31,6 @@ export default function App() {
       }
     } catch (e) {
       console.log("Error @checkOnboarding: ", e);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -38,32 +38,27 @@ export default function App() {
     checkOnboarding();
   }, []);
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {viewedOnboarding ? null : (
+  if (initializing) return null;
+
+  if (!user) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          {viewedOnboarding ? null : (
+            <Stack.Screen
+              name="Onboarding"
+              component={Onboarding}
+              options={{ headerShown: false }}
+            />
+          )}
+
           <Stack.Screen
-            name="Onboarding"
-            component={Onboarding}
+            name="Login"
+            component={LoginScreen}
             options={{ headerShown: false }}
           />
-        )}
-
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: kColors.kPrimary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
