@@ -6,9 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 
 import { styles } from "./styles.js";
 import slides from "./slides.js";
-import OnboardingItem from "./onboardingItem/index.js";
-import Paginator from "../paginator/index.js";
-import NextButton from "./nextButton/index.js";
+import OnboardingItem from "../../components/onboarding/onboardingItem/index.js";
+import Paginator from "../../components/paginator/index.js";
+import NextButton from "../../components/onboarding/nextButton/index.js";
 
 const Onboarding = ({}) => {
   const scrollHorizontal = useRef(new Animated.Value(0)).current;

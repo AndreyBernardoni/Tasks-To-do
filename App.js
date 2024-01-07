@@ -5,7 +5,7 @@ import { kColors } from "./src/utils/kColors";
 import LoginScreen from "./src/screens/login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import Onboarding from "./src/components/onboarding";
+import Onboarding from "./src/screens/onboarding";
 
 const Loading = () => {
   return (
