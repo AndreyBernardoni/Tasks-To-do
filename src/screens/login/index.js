@@ -5,16 +5,80 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { styles } from "./styles.js";
 import { Feather } from "@expo/vector-icons";
 import { kColors } from "../../utils/kColors.js";
+import auth from "@react-native-firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPassVisible, setIsPassVisible] = useState(false);
+
+  function Logon() {
+    if (email == " " && password == " ") {
+      Alert.alert("Preencha os campos");
+    }
+    console.log(email);
+    console.log(password);
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log("User account created & signed in!");
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          console.log("That email address is already in use!");
+        }
+
+        if (error.code === "auth/invalid-email") {
+          console.log("That email address is invalid!");
+        }
+
+        console.error(error);
+      });
+  }
+  function Login() {
+    if (email === "" && password === "") {
+      Alert.alert("Preencha os campos");
+    }
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log("User signed in!");
+      })
+      .catch((error) => {
+        switch (error) {
+          case "auth/invalid-email":
+            Alert.alert(
+              "Email inválido",
+              "Digite um email válido\nEx: fulano@gmail.com"
+            );
+            break;
+
+          case "auth/wrong-password":
+            Alert.alert("Email ou Senha incorretos", "Tente novamente");
+            break;
+
+          case "auth/user-not-found":
+            Alert.alert(
+              "Usuário não encontrado",
+              "Verifique se o email está correto"
+            );
+            break;
+
+          case "auth/weak-password":
+            Alert.alert(
+              "Senha fraca",
+              "Digite uma senha com no mínimo 6 caracteres"
+            );
+            break;
+        }
+      });
+  }
 
   return (
     <View style={styles.container}>
@@ -27,7 +91,7 @@ const LoginScreen = () => {
         placeholder="Email"
         keyboardType="email-address"
         value={email}
-        onChange={(value) => setEmail(value)}
+        onChangeText={(value) => setEmail(value)}
       />
       <View style={styles.passContainer}>
         <TextInput
@@ -35,7 +99,7 @@ const LoginScreen = () => {
           placeholder="Senha"
           secureTextEntry={!isPassVisible}
           value={password}
-          onChange={(value) => setPassword(value)}
+          onChangeText={(value) => setPassword(value)}
         />
         <TouchableOpacity onPress={() => setIsPassVisible(!isPassVisible)}>
           <Feather
@@ -46,16 +110,22 @@ const LoginScreen = () => {
           />
         </TouchableOpacity>
       </View>
-      <Pressable title="Entrar" onPress={() => {}} style={styles.loginButton}>
+      <TouchableOpacity
+        onPress={() => {
+          Login();
+        }}
+        style={styles.loginButton}
+      >
         <Text style={styles.loginText}>Entrar</Text>
-      </Pressable>
-      <Pressable
-        title="Cadastrar"
-        onPress={() => {}}
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          Logon();
+        }}
         style={styles.registerButton}
       >
         <Text style={styles.registerText}>Cadastrar</Text>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };

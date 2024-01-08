@@ -1,25 +1,30 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
-import { kColors } from "./src/utils/kColors";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import auth from "@react-native-firebase/auth";
 import LoginScreen from "./src/screens/login";
+import HomeScreen from "./src/screens/home";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
 import Onboarding from "./src/screens/onboarding";
-
-const Loading = () => {
-  return (
-    <View style={styles.container}>
-      <ActivityIndicator size="large" color={kColors.kPrimary} />
-    </View>
-  );
-};
+import CreateTaskScreen from "./src/screens/createTask";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
   const [viewedOnboarding, setViewedOnboarding] = useState(false);
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   const checkOnboarding = async () => {
     try {
@@ -29,8 +34,6 @@ export default function App() {
       }
     } catch (e) {
       console.log("Error @checkOnboarding: ", e);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -38,32 +41,48 @@ export default function App() {
     checkOnboarding();
   }, []);
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {viewedOnboarding ? null : (
-          <Stack.Screen
-            name="Onboarding"
-            component={Onboarding}
-            options={{ headerShown: false }}
-          />
-        )}
+  if (initializing) return null;
 
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  if (!user) {
+    return (
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {viewedOnboarding ? null : (
+              <Stack.Screen
+                name="Onboarding"
+                component={Onboarding}
+                options={{ headerShown: false }}
+              />
+            )}
+
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    );
+  } else {
+    return (
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CreateTask"
+              component={CreateTaskScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: kColors.kPrimary,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
