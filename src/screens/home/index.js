@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Image } from "react-native";
 import React from "react";
 import { styles } from "./styles";
 import TaskCard from "../../components/taskcard";
@@ -6,7 +6,7 @@ import FAB from "react-native-fab";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { kColors } from "./../../utils/kColors";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.appbar}>
@@ -17,7 +17,9 @@ export default function HomeScreen() {
         <FAB
           buttonColor={kColors.kPrimary}
           iconTextColor="#FFFFFF"
-          onClickAction={() => {}}
+          onClickAction={() => {
+            navigation.navigate("CreateTask");
+          }}
           iconTextComponent={<Icon name="add" />}
         />
       </View>

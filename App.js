@@ -7,6 +7,7 @@ import LoginScreen from "./src/screens/login";
 import HomeScreen from "./src/screens/home";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Onboarding from "./src/screens/onboarding";
+import CreateTaskScreen from "./src/screens/createTask";
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +73,11 @@ export default function App() {
             <Stack.Screen
               name="Home"
               component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CreateTask"
+              component={CreateTaskScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
