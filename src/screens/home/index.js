@@ -1,11 +1,26 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
-import auth from "@react-native-firebase/auth";
+import { styles } from "./styles";
+import TaskCard from "../../components/taskcard";
+import FAB from "react-native-fab";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { kColors } from "./../../utils/kColors";
 
-export default function index() {
+export default function HomeScreen() {
   return (
-    <View>
-      <Text>index</Text>
+    <View style={styles.container}>
+      <View style={styles.appbar}>
+        <Image source={require("./../../../assets/logo.png")} />
+      </View>
+      <View style={styles.containerBody}>
+        <TaskCard />
+        <FAB
+          buttonColor={kColors.kPrimary}
+          iconTextColor="#FFFFFF"
+          onClickAction={() => {}}
+          iconTextComponent={<Icon name="add" />}
+        />
+      </View>
     </View>
   );
 }

@@ -4,4 +4,5 @@ export const kColors = {
   kText: "#1E1E1E",
   kWhite: "#FFFFFF",
   kWhiteBackground: "#FBFBFC",
+  kGrape: "#FAEFFF",
 };
