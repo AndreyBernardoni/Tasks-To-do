@@ -42,7 +42,7 @@ const LoginScreen = () => {
       });
   }
   function Login() {
-    if (email === " " && password === " ") {
+    if (email === "" && password === "") {
       Alert.alert("Preencha os campos");
     }
     auth()
@@ -51,11 +51,32 @@ const LoginScreen = () => {
         console.log("User signed in!");
       })
       .catch((error) => {
-        if (error.code === "auth/invalid-email") {
-          console.log("That email address is invalid!");
-        }
+        switch (error) {
+          case "auth/invalid-email":
+            Alert.alert(
+              "Email inválido",
+              "Digite um email válido\nEx: fulano@gmail.com"
+            );
+            break;
 
-        console.error(error);
+          case "auth/wrong-password":
+            Alert.alert("Email ou Senha incorretos", "Tente novamente");
+            break;
+
+          case "auth/user-not-found":
+            Alert.alert(
+              "Usuário não encontrado",
+              "Verifique se o email está correto"
+            );
+            break;
+
+          case "auth/weak-password":
+            Alert.alert(
+              "Senha fraca",
+              "Digite uma senha com no mínimo 6 caracteres"
+            );
+            break;
+        }
       });
   }
 

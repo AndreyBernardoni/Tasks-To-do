@@ -26,8 +26,12 @@ export default function TaskCard() {
   return (
     <Swipable
       renderRightActions={() => <DeleteAction />}
+      onSwipeableOpen={(direction) => {
+        if (direction === "left") {
+          setChecked(!isChecked);
+        }
+      }}
       renderLeftActions={() => <CheckAction />}
-      containerStyle={{ overflow: "hidden" }}
     >
       <TouchableOpacity style={styles.containerRow}>
         <View style={styles.containerCheck}>
