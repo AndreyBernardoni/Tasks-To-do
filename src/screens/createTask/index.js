@@ -5,8 +5,16 @@ import { Feather } from "@expo/vector-icons";
 import { kColors } from "../../utils/kColors";
 import ColorPicker from "react-native-wheel-color-picker";
 import { useState } from "react";
-export default function CreateTaskScreen({ navigation }) {
+export default function CreateTaskScreen({ navigation, route }) {
   const [color, setColor] = useState("");
+  const [taskName, setTaskName] = useState("");
+
+  const { tasks, addTaskFunc } = route.params;
+
+  function createTask(title, tag) {
+    addTaskFunc({ title: title, tag: tag });
+    navigation.goBack();
+  }
 
   return (
     <View style={styles.container}>
@@ -27,6 +35,7 @@ export default function CreateTaskScreen({ navigation }) {
           style={styles.inputs}
           placeholder="Nome da tarefa"
           keyboardType="default"
+          onChangeText={(text) => setTaskName(text)}
         />
         <TouchableOpacity
           style={[
@@ -55,7 +64,10 @@ export default function CreateTaskScreen({ navigation }) {
             palette={["#8338ec", "#ff006e", "#0d47a1", "#006400"]}
           />
         </View>
-        <TouchableOpacity style={styles.createButton}>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={() => createTask(taskName, color)}
+        >
           <Text style={[styles.text, { color: kColors.kWhite }]}>
             Criar tarefa
           </Text>

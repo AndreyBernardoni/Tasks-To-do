@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  deleteAction: {
+  delete: {
     backgroundColor: "red",
     justifyContent: "center",
     alignItems: "center",
@@ -54,5 +54,10 @@ export const styles = StyleSheet.create({
     height: 80,
     margin: 10,
     borderRadius: 20,
+  },
+  tag: {
+    width: 5,
+    height: 40,
+    borderRadius: 10,
   },
 });

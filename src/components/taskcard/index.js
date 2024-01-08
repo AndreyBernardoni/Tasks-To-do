@@ -6,13 +6,6 @@ import { kColors } from "../../utils/kColors";
 import Swipable from "react-native-gesture-handler/Swipeable";
 import { Feather } from "@expo/vector-icons";
 
-function DeleteAction() {
-  return (
-    <TouchableOpacity style={styles.deleteAction}>
-      <Feather name="trash" size={30} color={kColors.kWhiteBackground} />
-    </TouchableOpacity>
-  );
-}
 function CheckAction() {
   return (
     <TouchableOpacity style={styles.checkAction}>
@@ -21,11 +14,18 @@ function CheckAction() {
   );
 }
 
-export default function TaskCard() {
+export default function TaskCard({ title, tag, removeTaskFunc, id }) {
   const [isChecked, setChecked] = React.useState(false);
   return (
     <Swipable
-      renderRightActions={() => <DeleteAction />}
+      renderRightActions={() => (
+        <TouchableOpacity
+          style={styles.delete}
+          onPress={() => removeTaskFunc(id)}
+        >
+          <Feather name="trash" size={30} color={kColors.kWhiteBackground} />
+        </TouchableOpacity>
+      )}
       onSwipeableOpen={(direction) => {
         if (direction === "left") {
           setChecked(!isChecked);
@@ -43,10 +43,10 @@ export default function TaskCard() {
             tintColors={{ true: kColors.kPrimary, false: kColors.kPrimary }}
           />
 
-          <Text style={styles.textName}>Task Name</Text>
+          <Text style={styles.textName}>{title}</Text>
         </View>
 
-        <Text style={styles.tag}>Tag</Text>
+        <TouchableOpacity style={[styles.tag, { backgroundColor: tag }]} />
       </TouchableOpacity>
     </Swipable>
   );
