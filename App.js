@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useState, useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import auth from "@react-native-firebase/auth";
 import LoginScreen from "./src/screens/login";
 import HomeScreen from "./src/screens/home";
@@ -43,35 +44,39 @@ export default function App() {
 
   if (!user) {
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          {viewedOnboarding ? null : (
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {viewedOnboarding ? null : (
+              <Stack.Screen
+                name="Onboarding"
+                component={Onboarding}
+                options={{ headerShown: false }}
+              />
+            )}
+
             <Stack.Screen
-              name="Onboarding"
-              component={Onboarding}
+              name="Login"
+              component={LoginScreen}
               options={{ headerShown: false }}
             />
-          )}
-
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     );
   } else {
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     );
   }
 }

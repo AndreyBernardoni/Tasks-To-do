@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     margin: 10,
+
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -35,5 +36,23 @@ export const styles = StyleSheet.create({
   containerCheck: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  deleteAction: {
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "20%",
+    height: 80,
+    margin: 10,
+    borderRadius: 20,
+  },
+  checkAction: {
+    backgroundColor: kColors.kPrimary,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "20%",
+    height: 80,
+    margin: 10,
+    borderRadius: 20,
   },
 });
