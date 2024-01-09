@@ -14,8 +14,15 @@ function CheckAction() {
   );
 }
 
-export default function TaskCard({ title, tag, removeTaskFunc, id }) {
-  const [isChecked, setChecked] = React.useState(false);
+export default function TaskCard({
+  title,
+  tag,
+  removeTaskFunc,
+  checked,
+  id,
+  updateCheckTaskFunc,
+}) {
+  const [isChecked, setChecked] = React.useState(checked);
   return (
     <Swipable
       renderRightActions={() => (
@@ -29,6 +36,7 @@ export default function TaskCard({ title, tag, removeTaskFunc, id }) {
       onSwipeableOpen={(direction) => {
         if (direction === "left") {
           setChecked(!isChecked);
+          updateCheckTaskFunc(id, !isChecked);
         }
       }}
       renderLeftActions={() => <CheckAction />}
@@ -36,10 +44,13 @@ export default function TaskCard({ title, tag, removeTaskFunc, id }) {
       <TouchableOpacity style={styles.containerRow}>
         <View style={styles.containerCheck}>
           <CheckBox
-            isChecked={isChecked}
+            isChecked={checked}
             style={styles.checkbox}
             value={isChecked}
-            onValueChange={(value) => setChecked(value)}
+            onValueChange={(value) => {
+              setChecked(value, !isChecked);
+              updateCheckTaskFunc(id, value);
+            }}
             tintColors={{ true: kColors.kPrimary, false: kColors.kPrimary }}
           />
 
