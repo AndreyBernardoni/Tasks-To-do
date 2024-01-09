@@ -1,16 +1,29 @@
 {
   "expo": {
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#65008C"
+    },
     "name": "Tasks-To-do",
     "slug": "Tasks-To-do",
+    "icon": "./assets/icon.png",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
-    "splash":{
-      "image":"./assets/splash.png",
-      "resizeMode":"contain",
-      "backgroundColor":"#65008C"
-    
+    "ios": {
+      "bundleIdentifier": "com.taskstodo",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.taskstodo",
+      "versionCode": 1
+    },
+    "extra": {
+      "eas": {
+        "projectId": "314919e7-f3ab-4781-965b-570557a93c66"
+      }
     }
   }
 }
